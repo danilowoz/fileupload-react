@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
 import DropzonePlaceholder from './placeholder/DropzonePlaceholder';
-import { Wrapper, DropZoneStyle } from './style'
+import { Wrapper, DropZoneStyle, ButtonClean } from './style'
 import FileItem from './FileItem'
 
 const DropzoneStylized = DropZoneStyle(Dropzone)
@@ -18,6 +18,7 @@ class App extends Component {
     }
 
     this.onRemove = this.onRemove.bind(this)
+    this.onRemoveAll = this.onRemoveAll.bind(this)
   }
 
   onDrop(accepted, rejected) {
@@ -63,6 +64,12 @@ class App extends Component {
     })
   }
 
+  onRemoveAll() {
+    this.setState({ 
+      files: []
+    })
+  }
+
   render() {
 
     let filesUploaded = this.state.files.map((f, key) => {
@@ -80,6 +87,7 @@ class App extends Component {
         >
           { this.state.files.length ? filesUploaded : <DropzonePlaceholder dragged={this.state.dragged} /> }
         </DropzoneStylized>
+        { this.state.files.length ? <ButtonClean onClick={this.onRemoveAll}>Remove all</ButtonClean> : '' }
       </Wrapper>
       );
   }

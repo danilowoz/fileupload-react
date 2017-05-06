@@ -45,8 +45,20 @@ const DropZoneStyle = (component) => (
 	`
 )
 
+const ButtonClean = styled.button`
+	border: 0;
+	background: #eee;
+	color: #999;
+	display: block;
+	margin: 20px auto;
+	border-radius: 3px;
+	padding: 5px 10px;
+	cursor: pointer;
+`
+
 export {
 	colors,
 	Wrapper,
-	DropZoneStyle
+	DropZoneStyle,
+	ButtonClean
 }
