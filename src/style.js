@@ -1,10 +1,11 @@
-// import React from 'react';
 import styled from 'styled-components';
 
 const colors = {
 	text: '#adacae',
 	box: '#ccc',
-	link: '#78a1cd'
+	link: '#78a1cd',
+	accepted: '#5ca343',
+	refected: '#f44b5c'
 }
 
 const Wrapper = styled.div`
@@ -16,10 +17,31 @@ const Wrapper = styled.div`
 const DropZoneStyle = (component) => (
 	styled(component)`
 		display: inline-block;
+		padding: 20px;
+		box-sizing: content-box;
 		width: 250px;
-		height: 250px;
+		min-height: 250px;
 		border: 3px dashed ${colors.text};
 		border-radius: 10px;
+		background: white;
+		z-index: 999;
+		&:after {
+			content: "";
+			position: fixed;
+			background: rgba(0,0,0,0);
+			top: 0;
+			right: 0;
+			left: 0;
+			bottom: 0;
+			z-index: -1;
+			transition: all .3s ease;
+		}
+		${props => props.dragged ? `
+
+			&:after {
+				background: rgba(0,0,0,0.3);
+			}
+		` : ``}	
 	`
 )
 
@@ -109,9 +131,41 @@ const BoxIcons = styled.div`
 	` : ``}
 `
 
+const FileItemStyled = styled.div`
+	font-family: sans-serif;
+	list-style: none;
+	margin: 0;
+	padding: 0 10px;
+	border-radius: 26px;
+	height: 26px;
+	line-height: 26px;
+	font-size: 13px;
+	color: white;
+	text-align: left;
+	position: relative;
+	margin-bottom: 10px;
+	${props => props.situation === 'accepted' ? `
+		background: ${colors.accepted};
+	` : `
+		background: ${colors.refected};
+	`}
+
+	a {
+		display: block;
+		width: 20px;
+		height: 20px;
+		border-radius: 20px;
+		background: white;
+		position: absolute;
+		top: 3px;
+		right: 3px;
+	}
+`
+
 export {
 	Wrapper,
 	DropZoneStyle,
 	DropzoneTitle,
-	BoxIcons
+	BoxIcons,
+	FileItemStyled
 }
