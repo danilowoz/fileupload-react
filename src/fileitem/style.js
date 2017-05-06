@@ -1,7 +1,36 @@
-import React, {Component} from 'react'
 import styled, { keyframes } from 'styled-components';
 import stripe from './stripe.png';
-import { colors } from './style'
+import { colors } from '../style'
+
+const animateScale = keyframes`
+  from {
+    transform: scale(0)
+  }
+
+  to {
+    transform: scale(1)
+  }
+`;
+
+const animateBg = keyframes`
+  from {
+    background-position-x: -100%;
+  }
+
+  to {
+    background-position-x: 100%;
+  }
+`;
+
+const progressWidth = keyframes`
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 100%;
+  }
+`;
 
 const FileItemStyled = styled.div`
 	font-family: sans-serif;
@@ -63,7 +92,7 @@ const FileItemStyled = styled.div`
 		}
 	}
 
-	&.waiting {
+	&.loading {
 		background: #acacac;
 
 		a span {
@@ -75,29 +104,16 @@ const FileItemStyled = styled.div`
 			color: #acacac;
 		}
 	}
+
+	&.accepted.loaded {
+		a {
+			animation: ${animateScale} .5s cubic-bezier(0.64, 0.57, 0.67, 1.53);
+		}
+	}
 `
-const animateBg = keyframes`
-  from {
-    background-position-x: -100%;
-  }
-
-  to {
-    background-position-x: 100%;
-  }
-`;
-
-const progressWidth = keyframes`
-  from {
-    width: 0;
-  }
-
-  to {
-    width: 100%;
-  }
-`;
 
 const ProgressBar = styled.div`
-	&.waiting {
+	&.loading {
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -109,44 +125,4 @@ const ProgressBar = styled.div`
 	}
 `
 
-class FileItem extends Component {
-
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			waiting: this.props.situation === 'accepted',
-			timeAnimation: Number(this.props.size)/200
-		}
-	}
-
-	componentWillMount() {
-		setTimeout( () => {
-			this.setState({
-				waiting: false
-			})
-
-		}, this.state.timeAnimation)
-	}
-
-	stopClick (e) {
-		e.stopPropagation();
-	}
-
-	render() {
-		let { name, size, situation, remove } = this.props
-		size = (size / (1024*1024)).toFixed(2)
-		return(
-			<FileItemStyled situation={situation} onClick={this.stopClick} className={this.state.waiting ? 'waiting': ''}>
-				<span>{`${name} (${size}mb)`}</span>
-				<ProgressBar className={this.state.waiting ? 'waiting': ''} timeAnimation={this.state.timeAnimation}/>
-				<a href='javascript:void(0)' onClick={remove.bind(this, this.props)}>
-					<span>{ situation === 'accepted' ? '✔' : '!' }</span>
-					<span className='remove'>×</span>
-				</a>
-			</FileItemStyled>
-		)
-	}
-}
-
-export default FileItem
+export { FileItemStyled, ProgressBar }

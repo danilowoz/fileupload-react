@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
 import DropzonePlaceholder from './placeholder/DropzonePlaceholder';
 import { Wrapper, DropZoneStyle, ButtonClean } from './style'
-import FileItem from './FileItem'
+import FileItem from './fileitem/FileItem'
 
 const DropzoneStylized = DropZoneStyle(Dropzone)
 const FileAllowed = 'image/jpeg, image/jpg, application/pdf,application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document'
