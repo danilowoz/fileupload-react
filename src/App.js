@@ -16,6 +16,8 @@ class App extends Component {
       files: [],
       dragged: false
     }
+
+    this.onRemove = this.onRemove.bind(this)
   }
 
   onDrop(accepted, rejected) {
@@ -23,6 +25,7 @@ class App extends Component {
       i.situation = 'accepted'
       return i
     })
+
     rejected = rejected.map(i => {
       i.situation = 'rejected'
       return i
@@ -48,10 +51,22 @@ class App extends Component {
     })
   }
 
+  onRemove(props) {
+    let oldFiles = this.state.files
+    let files = oldFiles.filter(f => {
+      debugger;
+      return f.name !== props.name && f.size !== props.size
+    })
+
+    this.setState({
+      files
+    })
+  }
+
   render() {
 
     let filesUploaded = this.state.files.map((f, key) => {
-      return <FileItem key={key} name={f.name} size={f.size} situation={f.situation} />
+      return <FileItem key={key} name={f.name} size={f.size} situation={f.situation} remove={this.onRemove} />
     })
 
     return (
@@ -65,10 +80,6 @@ class App extends Component {
         >
           { this.state.files.length ? filesUploaded : <DropzonePlaceholder dragged={this.state.dragged} /> }
         </DropzoneStylized>
-
-        <aside>
-            
-        </aside>
       </Wrapper>
       );
   }
