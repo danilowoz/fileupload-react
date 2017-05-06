@@ -15,7 +15,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "gh-pages": "git checkout -B gh-pages && git add -f build && git commit -am \"Rebuild website\" && git push origin :gh-pages && git subtree push --prefix build origin gh-pages && git checkout -",
+    "gh-pages": "npm run build && git checkout -B gh-pages && git add -f build && git commit -am \"Rebuild website\" && git push origin :gh-pages && git subtree push --prefix build origin gh-pages && git checkout -",
     "eject": "react-scripts eject"
   }
 }
