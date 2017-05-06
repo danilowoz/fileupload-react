@@ -1,20 +1,62 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Dropzone from 'react-dropzone';
+import DropzonePlaceholder from './placeholder/DropzonePlaceholder';
+import { Wrapper, DropZoneStyle } from './style'
+
+const DropzoneStylized = DropZoneStyle(Dropzone)
+const FileAllowed = 'image/jpeg, image/jpg, application/pdf,application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document'
 
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+    
+    this.state = { 
+      files: [],
+      dragged: false
+    }
+  }
+
+  onDrop(files) {
+    this.setState({
+      files
+    })
+  }
+
+  onDrag(e) {
+    this.setState({
+      dragged : true
+    })
+  }
+
+  onDragOut(e) {
+    this.setState({
+      dragged : false
+    })
+  }
+
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
-    );
+      <Wrapper>
+        <DropzoneStylized 
+          accept={FileAllowed} 
+          onDrop={ this.onDrop.bind(this) } 
+          onDragEnter={ this.onDrag.bind(this) }
+          onDragLeave={ this.onDragOut.bind(this) }
+        >
+          { this.state.files.length ? '' : <DropzonePlaceholder dragged={this.state.dragged} /> }
+        </DropzoneStylized>
+
+        <aside>
+          <h2>Dropped files</h2>
+          <ul>
+            {
+              this.state.files.map(f => <li>{f.name} - {f.size} bytes</li>)
+            }
+          </ul>
+        </aside>
+      </Wrapper>
+      );
   }
 }
 
