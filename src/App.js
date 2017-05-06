@@ -55,7 +55,6 @@ class App extends Component {
   onRemove(props) {
     let oldFiles = this.state.files
     let files = oldFiles.filter(f => {
-      debugger;
       return f.name !== props.name && f.size !== props.size
     })
 
