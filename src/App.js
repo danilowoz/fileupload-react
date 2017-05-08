@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import uuid from 'uuid'
 import Dropzone from 'react-dropzone';
 import DropzonePlaceholder from './placeholder/DropzonePlaceholder';
 import { Wrapper, DropZoneStyle, ButtonClean } from './style'
@@ -24,11 +25,13 @@ class App extends Component {
   onDrop(accepted, rejected) {
     accepted = accepted.map(i => {
       i.situation = 'accepted'
+      i.id = uuid.v1()
       return i
     })
 
     rejected = rejected.map(i => {
       i.situation = 'rejected'
+      i.id = uuid.v1()
       return i
     })
 
@@ -55,7 +58,7 @@ class App extends Component {
   onRemove(props) {
     let oldFiles = this.state.files
     let files = oldFiles.filter(f => {
-      return f.name !== props.name && f.size !== props.size
+      return f.id !== props.id
     })
 
     this.setState({
@@ -72,17 +75,17 @@ class App extends Component {
   render() {
 
     let filesUploaded = this.state.files.map((f, key) => {
-      return <FileItem key={key} name={f.name} size={f.size} situation={f.situation} remove={this.onRemove} />
+      return <FileItem key={key} name={f.name} size={f.size} situation={f.situation} id={f.id} remove={this.onRemove} />
     })
 
     return (
       <Wrapper>
         <DropzoneStylized 
-          accept={FileAllowed} 
+          accept={ FileAllowed } 
           onDrop={ this.onDrop.bind(this) } 
           onDragEnter={ this.onDrag.bind(this) }
           onDragLeave={ this.onDragOut.bind(this) }
-          dragged={this.state.dragged} 
+          className={ this.state.dragged ? 'dragged' : '' } 
         >
           { this.state.files.length ? filesUploaded : <DropzonePlaceholder dragged={this.state.dragged} /> }
         </DropzoneStylized>

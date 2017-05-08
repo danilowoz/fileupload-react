@@ -11,20 +11,20 @@ class FileItem extends Component {
 			// just progressbar
 			timeAnimation: Number(this.props.size)/200
 		}
-	}
-
-	componentWillMount() {
 
 		// just progressbar
-		setTimeout( () => {
-			this.setState({
-				loading: false
-			})
-		}, this.state.timeAnimation)
+		this.timeout = setTimeout(() => {
+	  	this.setState({ loading: false })
+	  }, this.state.timeAnimation)
 	}
 
-	stopClick (e) {
-		e.stopPropagation();
+	componentWillUnmount() {
+	  clearTimeout(this.timeout);
+	}
+
+	stopClick(e) {
+		e.stopPropagation()
+		e.preventDefault()
 	}
 
 	render() {
@@ -36,7 +36,7 @@ class FileItem extends Component {
 			<FileItemStyled situation={situation} onClick={this.stopClick} className={`${this.props.situation} ${loadingClass}`}>
 				<span>{`${name} (${size}mb)`}</span>
 				<ProgressBar className={loadingClass} timeAnimation={this.state.timeAnimation}/>
-				<a href='javascript:void(0)' onClick={remove.bind(this, this.props)}>
+				<a href='#' onClick={remove.bind(this, this.props)}>
 					<span>{ situation === 'accepted' ? '✔' : '!' }</span>
 					<span className='remove'>×</span>
 				</a>

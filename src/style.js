@@ -36,12 +36,12 @@ const DropZoneStyle = (component) => (
 			z-index: -1;
 			transition: all .3s ease;
 		}
-		${props => props.dragged ? `
+		&.dragged {
 
 			&:after {
 				background: rgba(0,0,0,0.3);
 			}
-		` : ``}	
+		}
 	`
 )
 
